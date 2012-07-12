@@ -1,0 +1,20 @@
+<h1>Happiness</h1>
+<p>Welcome to this page</p>
+<table>
+    <tr>
+        <th>Application Id</th>
+        <th>Application Name</th>
+        <th>Package Name</th>
+        <th>Google Authorization Token</th>
+    </tr>
+<% for(var key in applications) {
+    application = applications[key];
+    %>
+    <tr>
+        <td><a href="/EchoView/<%= application.application_id %>/app/view"><%= application.application_id %></a></td>
+        <td><%= application.name %></td>
+        <td><%= application.package_name %></td>
+        <td><%= application.google_authorization_token %></td>
+    </tr>
+        <% } %>
+</table>

@@ -1,0 +1,50 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+            $("#submit").click(function() {
+                var data = {
+                    package_name: $("#package_name").val(),
+                    google_authorization_token: $("#google_authorization_token").val()
+                };
+                $.ajax(
+                        "/Echo/<%= application.application_id %>/app/update",
+                        {
+                            data: data,
+                            dataType: "json",
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                console.log(jqXHR);
+                                alert("received!");
+                            },
+                            success: function(data, textStatus, jqXHR) {
+                                console.log(data);
+                                alert("received!");
+                            },
+                            type: "PUT",
+
+                        }
+                );
+            });
+    });
+</script>
+
+<h1>Happiness</h1>
+<p>Welcome to this page</p>
+    <table>
+        <tr>
+            <td>Application Id</td>
+            <td><%= application.application_id %></td>
+        </tr><tr>
+            <td>Application Name</td>
+            <td><%= application.name %></td>
+        </tr><tr>
+            <td>Package Name</td>
+            <td><input id="package_name" type="text" size="50" value="<%= application.package_name %>" /></td>
+        </tr><tr>
+            <td>Google Authorization Token</td>
+            <td><input id="google_authorization_token" type="text" size="50" value="<%= application.google_authorization_token %>" /></td>
+        </tr>
+    </table>
+    <input id="submit" type="submit" value="Submit"/>
+</form>
+        <br/><br/>
+
+<a href="/EchoView/<%= application.application_id %>/device/view">View Devices</a>

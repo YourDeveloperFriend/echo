@@ -1,0 +1,71 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#ultra").click(function() {
+            var clicked = $(this).attr('checked');
+            if(clicked)
+                $("input[type=checkbox]").attr('checked', clicked);
+            else
+                $("input[type=checkbox]").removeAttr('checked');
+        });
+        $("#sendMsg").click(function() {
+            var ids = [];
+            $(".select").each(function() {
+                ids.push($(this).val());
+            });
+            var data = {
+                devices: ids,
+                android: {
+                    alert: $("#message").val(),
+                    collapse_key: "from browser"
+                },
+                ios: {
+                    alert: $("#message").val(),
+                    sound: "ping.caf"
+                }
+
+            };
+            $.ajax(
+                    "/Echo/<%= application.application_id %>/device/sendMsg",
+                    {
+                        data: data,
+                        dataType: "json",
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.log(jqXHR);
+                            alert("not received!");
+                        },
+                        success: function(data, textStatus, jqXHR) {
+                            console.log(data);
+                            alert("received!");
+                        },
+                        type: "PUT",
+
+                    }
+            );
+        });
+    });
+</script>
+
+<h1>Happiness</h1>
+    <p>Welcome to this page</p>
+<a href="/EchoView/<%= application.application_id %>/app/view">View Application Details</a><br/>
+<input type="text" id="message" size="25"/><input type="submit" id="sendMsg" value="Send Message"/><br/>
+<table>
+    <tr>
+        <th><input type="checkbox" id="ultra" /></th>
+        <th>Device Id</th>
+        <th>Username</th>
+        <th>Operating System</th>
+        <th>Tags</th>
+    </tr>
+    <% for(var key in devices) {
+        device = devices[key]; console.log(device.device_type);
+        %>
+        <tr>
+        <td><input type="checkbox" class="select" value="<%= device.device_id %>"/></td>
+        <td><a href="/EchoView/<%= application.application_id %>/device/view?device_id=<%= device.device_id %>"><%= device.device_id %></a></td>
+        <td><%= device.user ? device.user : "" %></td>
+        <td><%= device.device_type %></td>
+        <td><%= device.tags ? device.tags.join(', ') : "" %></td>
+    </tr>
+    <% } %>
+</table>
